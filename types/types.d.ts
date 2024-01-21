@@ -1,29 +1,44 @@
+export interface Category {
+  id: number;
+  name: string;
+  icon: string;
+}
+export interface NavLink {
+  id: number;
+  title: string;
+  href: string;
+  icon?: string;
+}
+
 export interface Product {
   id: number;
   title: string;
+  description: string;
   price: number;
-  image: string;
-  category: {
-    id: number;
-    name: string;
-    image: string;
-  };
+  discountPercentage?: number;
+  rating?: number;
+  stock: number;
+  brand: string;
+  category: string;
+  thumbnail: string;
   images: string[];
 }
 
-export interface ProductsResponse {
-  items: Product[];
+export interface ProductResponse {
+  products: Product[];
+  categories: Category[];
   total: number;
 }
 
 export interface Pagination {
-  offset: number;
   limit: number;
+  skip: number;
 }
 
 export interface Filters {
-  search?: string;
+  q?: string;
+  category?: string;
   price_min?: number;
   price_max?: number;
-  categoryId?: number;
+  sort?: string;
 }
