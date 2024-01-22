@@ -20,9 +20,9 @@
       </button>
       <ul>
         <li v-for="link in navLinks" :key="link.id">
-          <NuxtLink :to="link.href" @click="isDrawerOpen = false">{{
-            link.title
-          }}</NuxtLink>
+          <NuxtLink :to="link.href" @click="isDrawerOpen = false">
+            <Icon :name="link.icon" />{{ link.title }}
+          </NuxtLink>
         </li>
       </ul>
     </div>

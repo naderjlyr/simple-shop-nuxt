@@ -1,24 +1,20 @@
 <template>
   <header class="bg-white shadow-md">
     <div class="container mx-auto flex items-center justify-between p-4">
-      <!-- Logo -->
       <div class="text-xl font-bold text-gray-800">nuxiShop!</div>
 
-      <!-- Desktop Navigation Links -->
-      <!-- Desktop Navigation Links -->
       <nav class="hidden lg:flex items-center">
         <ul class="flex space-x-4">
           <li v-for="link in navLinks" :key="link.id" class="relative">
-            <!-- Using NuxtLink for navigation -->
             <NuxtLink
               v-if="link.title !== 'Categories'"
               :to="link.href"
               class="text-gray-800 hover:text-orange-500 px-3 py-2 flex items-center transition duration-300"
             >
+              <Icon :name="link.icon" class="text-xl" />
               {{ link.title }}
             </NuxtLink>
 
-            <!-- Categories Dropdown -->
             <div v-else>
               <button
                 ref="categoriesButton"
@@ -50,10 +46,14 @@
       </nav>
 
       <!-- Icons: Search, Favorite, and Cart -->
+
       <div class="flex items-center space-x-4">
         <UiSearchBar />
         <Icon name="lets-icons:favorite" />
-        <Icon name="uil:cart" />
+        <button @click="toggleCart">
+          <Icon name="uil:cart" />
+        </button>
+        <product-cart />
       </div>
     </div>
   </header>

@@ -1,10 +1,4 @@
-import type {
-  Category,
-  Filters,
-  Pagination,
-  Product,
-  ProductResponse,
-} from "~/types/types";
+import type { Category, Product, ProductResponse } from "~/types/types";
 import { defaultCategories } from "~/constants/appConfig";
 
 export const useProductStore = defineStore("productStore", () => {
@@ -15,14 +9,30 @@ export const useProductStore = defineStore("productStore", () => {
   );
   const loading = useState<boolean>("loading", () => false);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (
+    categorySlug = "",
+    pagination = { limit: 100, skip: 0 },
+  ) => {
     loading.value = true;
     try {
-      const response = await $fetch<ProductResponse>("/api/products");
-      if (response && response.products) {
+      const params = new URLSearchParams();
+      params.append("limit", pagination.limit.toString());
+      params.append("skip", pagination.skip.toString());
+
+      let apiUrl = "https://dummyjson.com/products";
+      if (categorySlug) {
+        apiUrl += `/category/${categorySlug}`;
+      }
+      const response = await $fetch<ProductResponse>(apiUrl, {
+        method: "GET",
+        params,
+      });
+
+      if (categorySlug) {
         products.value = response.products;
       } else {
-        console.error("Products data structure is unexpected:", response);
+        // Append new products to the existing list when fetching all products
+        products.value = [...products.value, ...response.products];
       }
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -30,11 +40,10 @@ export const useProductStore = defineStore("productStore", () => {
       loading.value = false;
     }
   };
-
   const fetchProductDetails = async (id: string) => {
     loading.value = true;
     try {
-      return await $fetch<Product>(`/api/products/${id}`);
+      return await $fetch<Product[]>(`/api/products/${id}`);
     } catch (error) {
       console.error("Failed to fetch products details:", error);
       return null;
@@ -59,32 +68,6 @@ export const useProductStore = defineStore("productStore", () => {
       loading.value = false;
     }
   };
-  const fetchFilteredProducts = async (
-    filters: Filters,
-    pagination: Pagination,
-  ) => {
-    loading.value = true;
-    try {
-      const paramsObject = { ...filters, ...pagination };
-      const params = new URLSearchParams(
-        Object.fromEntries(
-          Object.entries(paramsObject).map(([key, value]) => [
-            key,
-            value.toString(),
-          ]),
-        ),
-      ).toString();
-
-      const response = await $fetch<ProductResponse>(`/api/products?${params}`);
-      return response.products ?? [];
-    } catch (error) {
-      console.error("Failed to fetch filtered products:", error);
-      return [];
-    } finally {
-      loading.value = false;
-    }
-  };
-
   const fetchCategories = async () => {
     try {
       categories.value = await $fetch<Category[]>("/api/categories");
@@ -116,7 +99,6 @@ export const useProductStore = defineStore("productStore", () => {
     fetchProducts,
     fetchCategories,
     searchProducts,
-    fetchFilteredProducts,
     fetchProductDetails,
     fetchAllCategoriesWithProducts,
   };

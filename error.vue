@@ -2,7 +2,7 @@
   <NuxtLayout name="404">
     <div>
       <div class="text-4xl">You've Arrived Here on Error, boss</div>
-      <button class="font-bold button" @click="goBack">Back</button>
+      <NuxtLink to="/">Go Back</NuxtLink>
     </div>
   </NuxtLayout>
 </template>

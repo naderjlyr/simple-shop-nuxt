@@ -27,6 +27,14 @@ export const useCartStore = defineStore("cart", {
     itemCount: (state) => {
       return state.items.reduce((total, item) => total + item.quantity, 0);
     },
+    getItem: (state) => {
+      return (productId: string) =>
+        state.items.find((item) => item.id === productId);
+    },
+    isInCart: (state) => {
+      return (productId: string) =>
+        state.items.some((item) => item.id === productId);
+    },
   },
   actions: {
     addProductToCart(product: CartItem) {
@@ -44,6 +52,20 @@ export const useCartStore = defineStore("cart", {
       const cartItem = this.items.find((item) => item.id === productId);
       if (cartItem && quantity > 0) {
         cartItem.quantity = quantity;
+      } else {
+        this.removeProductFromCart(productId);
+      }
+    },
+    incrementQuantity(productId: string) {
+      const cartItem = this.items.find((item) => item.id === productId);
+      if (cartItem) {
+        cartItem.quantity += 1;
+      }
+    },
+    decrementQuantity(productId: string) {
+      const cartItem = this.items.find((item) => item.id === productId);
+      if (cartItem && cartItem.quantity > 1) {
+        cartItem.quantity -= 1;
       } else {
         this.removeProductFromCart(productId);
       }
