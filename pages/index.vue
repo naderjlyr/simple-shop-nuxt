@@ -1,22 +1,35 @@
-<script setup lang="ts">
+<script setup>
 const productStore = useProductStore();
-const { loading, products } = storeToRefs(productStore);
+
+const {
+  data: categoriesWithProducts,
+  pending,
+  error,
+} = useAsyncData(
+  "categoriesWithProducts",
+  productStore.fetchAllCategoriesWithProducts,
+);
 </script>
+
 <template>
-  <NuxtPage>
+  <div v-if="pending" class="text-center">Loading...</div>
+  <div v-else-if="error" class="text-center">Error loading products.</div>
+  <div v-else class="space-y-8">
     <div
-      v-if="loading"
-      class="grid grid-cols-1 gap-4 p-6 md:grid md:grid-cols-3 lg:grid lg:grid-cols-3 xl:grid xl:grid-cols-4"
+      v-for="category in categoriesWithProducts"
+      :key="category.name"
+      class="mb-8 bg-white"
     >
-      <div v-for="n of 16" :key="n">Loading</div>
-    </div>
-    <div
-      v-else
-      class="grid grid-cols-1 gap-4 p-6 md:grid md:grid-cols-3 lg:grid lg:grid-cols-3 xl:grid xl:grid-cols-4"
-    >
-      <div v-for="product in products" :key="product.id">
-        <div class="text-black font-bold">{{ product.category }}</div>
+      <h2 class="text-2xl font-semibold mb-4 text-gray-700">
+        {{ category.name }}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <ProductCard
+          v-for="product in category.products"
+          :key="product.id"
+          :product="product"
+        />
       </div>
     </div>
-  </NuxtPage>
+  </div>
 </template>

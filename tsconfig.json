@@ -1,9 +1,7 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "compilerOptions": {
-    "types": [
-      "pinia-plugin-persist"
-    ]
+    "types": ["pinia-plugin-persist"],
   },
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
 }

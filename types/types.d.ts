@@ -10,6 +10,13 @@ export interface NavLink {
   icon?: string;
 }
 
+export interface ProductResponse {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
 export interface Product {
   id: number;
   title: string;
@@ -22,12 +29,6 @@ export interface Product {
   category: string;
   thumbnail: string;
   images: string[];
-}
-
-export interface ProductResponse {
-  products: Product[];
-  categories: Category[];
-  total: number;
 }
 
 export interface Pagination {

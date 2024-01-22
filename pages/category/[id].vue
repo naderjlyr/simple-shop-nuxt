@@ -1,8 +1,7 @@
 <template>
   <div>
     <h1>{{ category.name }}</h1>
-    <img :src="category.image" :alt="category.name" />
-    <!-- Add more category details here -->
+    <Icon :name="category.icon" />
   </div>
 </template>
 

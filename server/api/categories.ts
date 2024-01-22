@@ -6,7 +6,6 @@ export default defineEventHandler(async () => {
       "https://dummyjson.com/products/categories",
       { method: "GET" },
     );
-
     return categoriesResponse.map((name, index) => ({
       id: index + 1,
       name,

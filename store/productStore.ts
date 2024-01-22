@@ -19,9 +19,25 @@ export const useProductStore = defineStore("productStore", () => {
     loading.value = true;
     try {
       const response = await $fetch<ProductResponse>("/api/products");
-      products.value = response.products ?? [];
+      if (response && response.products) {
+        products.value = response.products;
+      } else {
+        console.error("Products data structure is unexpected:", response);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching products:", error);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const fetchProductDetails = async (id: string) => {
+    loading.value = true;
+    try {
+      return await $fetch<Product>(`/api/products/${id}`);
+    } catch (error) {
+      console.error("Failed to fetch products details:", error);
+      return null;
     } finally {
       loading.value = false;
     }
@@ -77,7 +93,22 @@ export const useProductStore = defineStore("productStore", () => {
       categories.value = defaultCategories;
     }
   };
-
+  const fetchAllCategoriesWithProducts = async () => {
+    try {
+      const fetchedCategories = await $fetch<Category[]>("/api/categories");
+      return await Promise.all(
+        fetchedCategories.map(async (category) => {
+          const response = await $fetch<ProductResponse>(
+            `/api/products/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`,
+          );
+          return { name: category.name, products: response.products };
+        }),
+      );
+    } catch (error) {
+      console.error("Error fetching categories with products:", error);
+      return [];
+    }
+  };
   return {
     loading,
     products,
@@ -86,5 +117,7 @@ export const useProductStore = defineStore("productStore", () => {
     fetchCategories,
     searchProducts,
     fetchFilteredProducts,
+    fetchProductDetails,
+    fetchAllCategoriesWithProducts,
   };
 });

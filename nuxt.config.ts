@@ -15,9 +15,6 @@ export default defineNuxtConfig({
     cssPath: "~/assets/css/tailwind.css",
     configPath: "tailwind.config",
     exposeConfig: false,
-    exposeLevel: 2,
-    config: {},
-    injectPosition: "first",
     viewer: true,
   },
   primevue: {
@@ -40,7 +37,8 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "nuxt-headlessui",
     "nuxt-icon",
-    "@nuxt/image"
+    "@nuxt/image",
+    "nuxt-swiper",
   ],
   headlessui: {
     prefix: "Headless",

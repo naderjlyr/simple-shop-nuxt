@@ -6,8 +6,8 @@ const productStore = useProductStore();
 productStore.fetchProducts();
 </script>
 <template>
+  <ui-main-navigation />
   <NuxtLayout>
-    <ui-main-navigation />
     <NuxtPage />
   </NuxtLayout>
 </template>

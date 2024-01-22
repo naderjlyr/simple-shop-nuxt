@@ -29,9 +29,10 @@
         class="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-50 max-h-60 overflow-auto"
       >
         <div v-if="searchResults.length > 0" class="py-1">
-          <div
+          <NuxtLink
             v-for="result in searchResults"
             :key="result.id"
+            :to="`/product/${result.id}`"
             class="flex flex-row items-center gap-3 p-2 hover:bg-gray-100"
           >
             <div
@@ -47,7 +48,7 @@
             <div class="flex-grow text-sm text-gray-700">
               {{ result.title }}
             </div>
-          </div>
+          </NuxtLink>
         </div>
         <div v-else class="px-4 py-3 text-sm text-gray-700">
           No results found.

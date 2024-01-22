@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="bg-gray-800 border-2 border-red-600 max-w-screen-2xl h-screen p-4 mx-auto container"
-  >
+  <div class="container mx-auto sm:p-8 md:p-12 lg:p-32">
     <slot />
   </div>
 </template>
