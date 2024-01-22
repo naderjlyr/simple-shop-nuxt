@@ -32,7 +32,7 @@
                   <NuxtLink
                     v-for="category in categories"
                     :key="category.id"
-                    :to="`/category/${category.id}`"
+                    :to="`/category/${category.slug}`"
                     class="flex px-4 py-2 text-gray-700 hover:bg-gray-100 gap-2"
                   >
                     <Icon :name="category.icon" class="text-xl" />
